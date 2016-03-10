@@ -19,5 +19,4 @@ that it's possible to implement file-local symbols or a better syntax for
 RegExp-s; a customizable reader in general—by just doing everything in Lisp
 rather than in C.
 
-See the commentary [inside the file](./blob/master/elisp-reader.el) for more
-information.
+See the commentary [inside the file](./elisp-reader.el) for more information.
