@@ -569,7 +569,7 @@ character is encountered this will produce an error."
             ((eq ch ?\\)
              (let ((next (funcall in)))
                (cond
-                 ((memq next '(?\\ ?/ ?\) ?\( ?\|))
+                 ((memq next '(?\\ ?/ ?\) ?\( ?\| ?\{ ?\}))
                   (push next ret))
                  ((eq next ?n)
                   (push ?\n ret))
@@ -580,9 +580,10 @@ character is encountered this will produce an error."
                  ((eq next ?t)
                   (push ?\t ret))
                  (t
-                  (push ?\\ ret)
+                  (when (memq next '(?\* ?\+ ?\. ?\? ?\[ ?\] ?\^ ?\$ ?\\))
+                    (push ?\\ ret))
                   (funcall in next)))))
-            ((memq ch '(?\) ?\( ?\|))
+            ((memq ch '(?\) ?\( ?\| ?\{ ?\}))
              (push ?\\ ret)
              (push ch ret))
             ((eq ch ?/)
