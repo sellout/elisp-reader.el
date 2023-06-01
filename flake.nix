@@ -186,6 +186,13 @@
                 echo "   \"${emacsPath pkgs.emacsPackages.package-lint}\""
                 echo "   \"${emacsPath pkgs.emacsPackages.relint}\""
                 echo "   \"${emacsPath pkgs.emacsPackages.xr}\"))"
+                ## TODO: Remove this once purcell/package-lint#238 is fixed.
+                ##       For now, it should be a reversed version of the values
+                ##       of `read-symbol-shorthands` in the various .el files.
+                echo "(require 'package-lint"
+                echo "         \"${emacsPath pkgs.emacsPackages.package-lint}/package-lint.el\")"
+                echo "(add-to-list 'package-lint--allowed-prefix-mappings"
+                echo "  '(\"elisp-reader\" . (\"er\")))"
               } >> Eldev
             '';
 
