@@ -1,3 +1,6 @@
+(require 'cl-lib)
+(require 'elisp-reader)
+
 (defun er-test (buffer)
   (with-current-buffer buffer
     (save-excursion

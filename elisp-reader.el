@@ -5,6 +5,7 @@
 
 ;; Author: Mihai Bazon <mihai.bazon@gmail.com>
 ;; Keywords: languages
+;; Version: 0.1.0
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -125,6 +126,8 @@
 ;; named $foo without conflict.
 
 ;;; Code:
+
+(require 'cl-lib)
 
 (defvar *er-orig-read* (symbol-function #'read)
   "Remember the original `read' function, because we'll have to
@@ -648,3 +651,4 @@ during byte compilation."
   (setq load-read-function (symbol-function 'er-read)))
 
 (provide 'elisp-reader)
+;;; elisp-reader.el ends here
