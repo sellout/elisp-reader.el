@@ -21,6 +21,8 @@
   }: let
     pname = "elisp-reader";
     ename = "emacs-${pname}";
+
+    supportedSystems = flaky.lib.defaultSystems;
   in
     {
       schemas = {
@@ -62,9 +64,9 @@
                 };
               })
             ])
-          flake-utils.lib.defaultSystems);
+          supportedSystems);
     }
-    // flake-utils.lib.eachDefaultSystem (system: let
+    // flake-utils.lib.eachSystem supportedSystems (system: let
       pkgs = import nixpkgs {
         inherit system;
         overlays = [flaky.overlays.elisp-dependencies];
