@@ -483,26 +483,26 @@ Returns nil if ELT isn’t in LST."
   "Replace occurrences  of CELL in ORIG with ORIG."
   (cl-labels
       ((subst-in (thing)
-                 (cond
-                  ((eq thing cell)
-                   orig)
-                  ((consp thing)
-                   (subst-in-list thing)
-                   thing)
-                  ((stringp thing)
-                   thing)
-                  ((arrayp thing)
-                   (subst-in-array thing)
-                   thing)
-                  (t
-                   thing)))
+         (cond
+          ((eq thing cell)
+           orig)
+          ((consp thing)
+           (subst-in-list thing)
+           thing)
+          ((stringp thing)
+           thing)
+          ((arrayp thing)
+           (subst-in-array thing)
+           thing)
+          (t
+           thing)))
        (subst-in-list (lst)
-                      (rplaca lst (subst-in (car lst)))
-                      (rplacd lst (subst-in (cdr lst))))
+         (rplaca lst (subst-in (car lst)))
+         (rplacd lst (subst-in (cdr lst))))
        (subst-in-array (array)
-                       (cl-loop for el across array
-                                for i upfrom 0
-                                do (aset array i (subst-in el)))))
+         (cl-loop for el across array
+                  for i upfrom 0
+                  do (aset array i (subst-in el)))))
     (subst-in orig)))
 
 (defconst er-*all-digits* '( ?0 ?1 ?2 ?3 ?4 ?5 ?6 ?7 ?8 ?9
