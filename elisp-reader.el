@@ -138,6 +138,10 @@
   "Remember the original `read' function.
 We'll have to use it in some situations that can't be handled from Lisp code.")
 
+(defvar er-*orig-read-from-string* (symbol-function #'read-from-string)
+  "Remember the original `read' function.
+We'll have to use it in some situations that can't be handled from Lisp code.")
+
 (defvar er-*macro-chars* (make-hash-table :test 'eq)
   "Custom read functions.
 A hash that maps character to a function of two arguments, stream (as a
