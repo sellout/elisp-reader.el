@@ -9,8 +9,8 @@
       "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
     ];
     ## Isolate the build.
-    registries = false;
     sandbox = "relaxed";
+    use-registries = false;
   };
 
   outputs = {
@@ -18,11 +18,12 @@
     flaky,
     nixpkgs,
     self,
+    systems,
   }: let
     pname = "elisp-reader";
     ename = "emacs-${pname}";
 
-    supportedSystems = flaky.lib.defaultSystems;
+    supportedSystems = import systems;
   in
     {
       schemas = {
@@ -61,24 +62,20 @@
           supportedSystems);
     }
     // flake-utils.lib.eachSystem supportedSystems (system: let
-      pkgs = import nixpkgs {
-        inherit system;
-        overlays = [
-          flaky.overlays.dependencies
-          flaky.overlays.elisp-dependencies
-        ];
-      };
+      pkgs = nixpkgs.legacyPackages.${system}.appendOverlays [
+        flaky.overlays.default
+        flaky.overlays.elisp-dependencies
+      ];
 
       src = pkgs.lib.cleanSource ./.;
     in {
       packages = {
         default = self.packages.${system}.${ename};
-        "${ename}" =
-          flaky.lib.elisp.package pkgs src pname (epkgs: [epkgs.buttercup]);
+        "${ename}" = pkgs.elisp.package pname src (epkgs: [epkgs.buttercup]);
       };
 
       projectConfigurations =
-        flaky.lib.projectConfigurations.default {inherit pkgs self;};
+        flaky.lib.projectConfigurations.emacs-lisp {inherit pkgs self;};
 
       devShells =
         self.projectConfigurations.${system}.devShells
@@ -87,8 +84,8 @@
       checks =
         self.projectConfigurations.${system}.checks
         // {
-          elisp-doctor = flaky.lib.elisp.checks.doctor pkgs src;
-          elisp-lint = flaky.lib.elisp.checks.lint pkgs src (_: []);
+          elisp-doctor = pkgs.elisp.checks.doctor src;
+          elisp-lint = pkgs.elisp.checks.lint src (_: []);
         };
 
       formatter = self.projectConfigurations.${system}.formatter;
@@ -100,5 +97,6 @@
 
     flake-utils.follows = "flaky/flake-utils";
     nixpkgs.follows = "flaky/nixpkgs";
+    systems.follows = "flaky/systems";
   };
 }
