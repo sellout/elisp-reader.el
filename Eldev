@@ -3,6 +3,7 @@
 (require 'eldev)
 
 (setq
+  eldev-files-to-package `(:or ,eldev-files-to-package "*.elc")
   ;; run all linters by default
   eldev-lint-default t
   ;; and disable the ‘elisp-lint’ validators that are already covered by
