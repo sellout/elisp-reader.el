@@ -54,7 +54,10 @@
             ({pkgs, ...}: {
               programs.emacs = {
                 enable = true;
-                extraConfig = "(require '${pname})";
+                extraConfig = ''
+                  ;;; -*- lexical-binding: t; -*-
+                  (require '${pname})
+                '';
                 extraPackages = epkgs: [epkgs.${pname}];
               };
             })
